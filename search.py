@@ -205,7 +205,7 @@ def generate_search_html(query, results, current_page, total_pages, total_result
         else:
             for row in results:
                 thread_id, title, last_post_at, views, hit_count, total_posts, snippet = row
-                snippet_text = snippet[:100] + "..." if snippet and len(snippet) > 100 else (snippet or "")
+                snippet_text = snippet[:250] + "..." if snippet and len(snippet) > 250 else (snippet or "")
                 snippet_html = html_lib.escape(snippet_text)
 
                 results_section += f"""
