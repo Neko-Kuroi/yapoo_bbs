@@ -2,7 +2,6 @@ import sqlite3
 from db import get_db
 import math
 import html as html_lib
-import urllib.parse
 from typing import Literal
 from fastapi import APIRouter, Query
 from fastapi.responses import HTMLResponse
@@ -123,28 +122,6 @@ def generate_index_html(threads, current_page, total_pages, total_threads, curre
         .thread-title a:hover {{ text-decoration: underline; }}
         .thread-info {{ color: #666; font-size: 12px; margin-top: 4px; }}
 
-        .search-links {{
-            margin-top: 6px;
-            font-size: 11px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }}
-        .search-links a {{
-            color: #888;
-            text-decoration: none;
-            padding: 2px 8px;
-            border-radius: 12px;
-            background: #f2f2f2;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }}
-        .search-links a:hover {{ background: #e0e0e0; color: #333; }}
-        .search-links .google:hover {{ background: #4285f4; color: white; }}
-        .search-links .yahoo-ai:hover {{ background: #ff6600; color: white; }}
-        .search-links .yahoo-video:hover {{ background: #ff7600; color: white; }}
-
         .pagination {{ margin: 20px 0; text-align: center; font-size: 13px; }}
         .pagination a, .pagination span {{
             display: inline-block;
@@ -174,6 +151,7 @@ def generate_index_html(threads, current_page, total_pages, total_threads, curre
     </div>
     <h1>🗨️ みんなの Yapoo! ニュース掲示板</h1>
     <div style="display: flex; align-items: center;">
+        <!-- <img src="/yapoo_bbs/yapoo.png" alt="Yapoo" height="30"> -->
         <img src="https://s.yimg.jp/c/logo/f/2.0/news_r_34_2x.png" alt="Yapoo" height="30">
         <div style="margin-left: 8px;">
             <small>IDなしで、もっと便利に</small><br>
@@ -188,7 +166,7 @@ def generate_index_html(threads, current_page, total_pages, total_threads, curre
         <a href="/?sort=old"     class="sort-btn {sort_btn['old']}">📅 古い順</a>
         <a href="/?sort=posts"   class="sort-btn {sort_btn['posts']}">💬 レス数順</a>
         <a href="/?sort=updated" class="sort-btn {sort_btn['updated']}">🕐 更新順</a>
-        <a href="/?sort=views"   class="sort-btn {sort_btn['views']}">🐾 閲覧数順</a>
+        <a href="/?sort=views"   class="sort-btn {sort_btn['views']}">👁 閲覧数順</a>
     </div>
 
     <div class="info">
@@ -204,24 +182,13 @@ def generate_index_html(threads, current_page, total_pages, total_threads, curre
     else:
         for thread in threads:
             thread_id, title, created_at, res_count, last_post_at, views = thread
-
-            search_query = urllib.parse.quote(title)
-            google_url      = f"https://www.google.com/search?q={search_query}"
-            yahoo_ai_url    = f"https://search.yahoo.co.jp/aichat?p={search_query}"
-            yahoo_video_url = f"https://search.yahoo.co.jp/video/search?p={search_query}"
-
             html += f"""
     <div class="thread">
         <div class="thread-title">
             <a href="/thread/{thread_id}">{html_lib.escape(title)}</a>
         </div>
         <div class="thread-info">
-            📅 {created_at} | 💬 {res_count}レス | 🐾 {views}ビュー | 🕐 最終更新: {last_post_at or created_at}
-        </div>
-        <div class="search-links">
-            <a href="{google_url}" target="_blank" class="google">🔍 Google検索</a>
-            <a href="{yahoo_ai_url}" target="_blank" class="yahoo-ai">🤖 Yahoo! AIチャット</a>
-            <a href="{yahoo_video_url}" target="_blank" class="yahoo-video">📺 Yahoo!動画検索</a>
+            📅 {created_at} | 💬 {res_count}レス | 👁 {views}ビュー | 🕐 最終更新: {last_post_at or created_at}
         </div>
     </div>
 """
