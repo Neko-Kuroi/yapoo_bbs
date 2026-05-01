@@ -198,7 +198,7 @@ def generate_search_html(query, results, current_page, total_pages, total_result
         if not results:
             results_section = f"""
             <div class="no-results">
-                😢 「{query}」に一致するスレッドは見つかりませんでした<br>
+                😢 「{html_lib.escape(query)}」に一致するスレッドは見つかりませんでした<br>
                 <small>違うキーワードで試してみてください</small>
             </div>
             """
