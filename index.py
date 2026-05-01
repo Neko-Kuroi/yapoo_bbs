@@ -8,7 +8,7 @@ from fastapi import APIRouter, Query
 from fastapi.responses import HTMLResponse
 
 from config import THREADS_PER_PAGE
-from ascii_art import ascii_art_cat
+from ascii_art import ascii_art_cat, ascii_art_cat4
 
 router = APIRouter()
 
@@ -180,7 +180,7 @@ def generate_index_html(threads, current_page, total_pages, total_threads, curre
             <small>ヤプーニュース記事にコメントしにｬ-</small>
         </div>
     </div>
-    <pre><small>{{ascii_art_cat}}</small></pre>
+    <pre><small>{ascii_art_cat4}{ascii_art_cat}</small></pre>
 
     <div class="sort-bar">
         <span class="sort-label">⇧⇩ 並べかえ:</span>
