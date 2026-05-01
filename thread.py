@@ -96,7 +96,7 @@ def generate_thread_html(thread, webhook_post, user_posts, votes, thread_id, cur
     webhook_html = ""
     if webhook_post:
         wp_id, wp_author, wp_body, wp_source_url, wp_created_at = webhook_post
-        source_html = f'<div class="source-url">📌 出典: {wp_source_url}' if wp_source_url else ""
+        source_html = f'<div class="source-url">📌 出典: <a href="{wp_source_url}" target="_blank"> リンク </a></div>' if wp_source_url else ""
         webhook_html = f"""
     <div class="webhook-post">
         <div class="webhook-header">
