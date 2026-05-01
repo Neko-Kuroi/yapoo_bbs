@@ -180,7 +180,7 @@ def generate_index_html(threads, current_page, total_pages, total_threads, curre
             <small>ヤプーニュース記事にコメントしにｬ-</small>
         </div>
     </div>
-    <pre><small>{ascii_art_cat}</small></pre>
+    <pre><small>{{ascii_art_cat}}</small></pre>
 
     <div class="sort-bar">
         <span class="sort-label">⇧⇩ 並べかえ:</span>
