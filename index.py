@@ -151,7 +151,8 @@ def generate_index_html(threads, current_page, total_pages, total_threads, curre
     </div>
     <h1>🗨️ みんなの Yapoo! ニュース掲示板</h1>
     <div style="display: flex; align-items: center;">
-        <img src="/yapoo_bbs/yapoo.png" alt="Yapoo" height="30">
+        <!-- <img src="/yapoo_bbs/yapoo.png" alt="Yapoo" height="30"> -->
+        <img src="https://s.yimg.jp/c/logo/f/2.0/news_r_34_2x.png" alt="Yapoo" height="30">
         <div style="margin-left: 8px;">
             <small>IDなしで、もっと便利に</small><br>
             <small>ヤプーニュース記事にコメントしにｬ-</small>
