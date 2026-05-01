@@ -6,17 +6,16 @@ import urllib.parse
 from typing import Literal
 from fastapi import APIRouter, Query
 from fastapi.responses import HTMLResponse
-
+# 静的ファイルをマウントするために
 from fastapi.staticfiles import StaticFiles
-
-# 静的ファイルをマウント
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
 
 from config import THREADS_PER_PAGE
 from ascii_art import ascii_art_cat
 
 router = APIRouter()
+# 静的ファイルをマウント
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 
 SortType = Literal["new", "old", "posts", "updated", "views"]
 
