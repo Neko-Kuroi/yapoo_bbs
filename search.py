@@ -214,7 +214,7 @@ def generate_search_html(query, results, current_page, total_pages, total_result
         <a href="/thread/{thread_id}">📌 {html_lib.escape(title)}</a>
     </div>
     <div class="result-meta">
-        🔍 {hit_count}件ヒット | 💬 {total_posts}レス | 👁 {views}ビュー | 🕐 {last_post_at}
+        🔍 {hit_count}件ヒット | 💬 {total_posts}レス | 🐾 {views}ビュー | 🕐 {last_post_at}
     </div>
     <div class="result-snippet">{snippet_html}</div>
 </div>
