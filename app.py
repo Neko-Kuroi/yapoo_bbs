@@ -11,6 +11,9 @@ import thread
 import post
 import search
 
+import admin
+import vote
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     init_db()
@@ -26,7 +29,9 @@ app.include_router(webhook.router)
 app.include_router(thread.router)
 app.include_router(post.router)
 app.include_router(search.router)
+app.include_router(admin.router)
 
+app.include_router(vote.router)
 
 if __name__ == "__main__":
     import uvicorn

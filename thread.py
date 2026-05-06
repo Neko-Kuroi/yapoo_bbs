@@ -14,7 +14,8 @@ router = APIRouter()
 @router.get("/thread/{thread_id}", response_class=HTMLResponse)
 async def view_thread(
     thread_id: int,
-    page: int = Query(1, ge=1)
+    page: int = Query(1, ge=1),
+    voted: int = Query(0) # フラグを受け取る
 ):
     with get_db() as conn:
 
@@ -29,11 +30,13 @@ async def view_thread(
         if not thread:
             raise HTTPException(status_code=404, detail="Thread not found")
 
-        # アクセス時にviews+1
-        conn.execute(
-            'UPDATE threads SET views = views + 1 WHERE id = ?',
-            (thread_id,)
-        )
+        # votedフラグがない場合のみ views+1 する
+        if not voted:
+            # アクセス時にviews+1
+            conn.execute(
+                'UPDATE threads SET views = views + 1 WHERE id = ?',
+                (thread_id,)
+            )
 
         # webhook_posts（別枠表示用、1件）
         webhook_post = conn.execute(
@@ -115,6 +118,7 @@ def generate_thread_html(thread, webhook_post, user_posts, votes, thread_id, cur
         up_count, down_count = votes.get(post_id, (0, 0))
         content_html = html_lib.escape(content).replace('\n', '<br>')
 
+        # 修正：<a>タグから<form>のボタンへ変更
         posts_html += f"""
     <div class="post" id="post-{global_num}">
         <div class="post-header">
@@ -124,13 +128,17 @@ def generate_thread_html(thread, webhook_post, user_posts, votes, thread_id, cur
         </div>
         <div class="post-content">{content_html}</div>
         <div class="post-votes">
-            <a href="/vote/{post_id}/up" class="vote-btn up">▲ {up_count}</a>
-            <a href="/vote/{post_id}/down" class="vote-btn down">▼ {down_count}</a>
+            <form action="/vote/{post_id}/up" method="post" style="display:inline">
+                <button type="submit" class="vote-btn up">▲ {up_count}</button>
+            </form>
+            <form action="/vote/{post_id}/down" method="post" style="display:inline">
+                <button type="submit" class="vote-btn down">▼ {down_count}</button>
+            </form>
         </div>
     </div>
 """
 
-    # ページネーション
+    # ページネーション (変更なし)
     pagination_html = ""
     if total_pages > 1:
         pagination_html += '<div class="pagination">'
@@ -229,7 +237,10 @@ def generate_thread_html(thread, webhook_post, user_posts, votes, thread_id, cur
             margin-top: 8px;
             font-size: 12px;
         }}
+        /* ボタンのスタイルを調整 */
         .vote-btn {{
+            background: none;
+            cursor: pointer;
             display: inline-block;
             padding: 2px 10px;
             margin-right: 6px;
@@ -237,6 +248,8 @@ def generate_thread_html(thread, webhook_post, user_posts, votes, thread_id, cur
             border-radius: 4px;
             text-decoration: none;
             color: #555;
+            font-size: 12px;
+            font-family: inherit;
         }}
         .vote-btn.up:hover {{ background: #e8f5e9; color: #2e7d32; border-color: #2e7d32; }}
         .vote-btn.down:hover {{ background: #fce4ec; color: #c62828; border-color: #c62828; }}
@@ -310,6 +323,7 @@ def generate_thread_html(thread, webhook_post, user_posts, votes, thread_id, cur
     </form>
 
     <script>
+        // ハッシュがあればスクロールする（必要に応じて）
         if (window.location.hash) {{
             document.getElementById(window.location.hash.slice(1))?.scrollIntoView();
         }}

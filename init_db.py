@@ -154,6 +154,8 @@ def init_db():
             conn.execute('CREATE INDEX IF NOT EXISTS idx_threads_views ON threads(views)')
             conn.execute('CREATE INDEX IF NOT EXISTS idx_user_posts_visible ON user_posts(is_visible)')
             conn.execute('CREATE INDEX IF NOT EXISTS idx_threads_visible ON threads(is_visible)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_user_posts_status ON user_posts(status)')
+            conn.execute('CREATE INDEX IF NOT EXISTS idx_user_posts_created ON user_posts(created_at)')
             print("✅ インデックス作成完了")
         except sqlite3.OperationalError as e:
             print(f"⚠️ 一部インデックス作成スキップ: {e}")

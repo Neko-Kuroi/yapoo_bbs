@@ -71,11 +71,11 @@ def setup_bore_tunnel():
     # flask_stderr_thread.start()
 
 
-    time.sleep(10)  # FastAPIサーバーが完全に起動するまで少し長めに7秒待ちます。
+    time.sleep(15)  # FastAPIサーバーが完全に起動するまで少し長めに15秒待ちます。
 
     # boreトンネルの起動
     print("🌐 bore トンネルを開始しています...")
-    # boreをローカルポート5000からbore.pubへのトンネルとして起動します。
+    # boreをローカルポート8000からbore.pubへのトンネルとして起動します。
     # stdoutとstderrをsubprocess.PIPEにリダイレクトし、テキストモードでキャプチャします。
     bore_process = subprocess.Popen(['sudo', './bore', 'local', '8000', '--to', 'bore.pub'],
                                    stdout=subprocess.PIPE,
@@ -187,7 +187,7 @@ def setup_cloudflare_tunnel():
     flask_stdout_thread.start()
     flask_stderr_thread.start()
 
-    time.sleep(10)  # サーバーの起動を待つ
+    time.sleep(15)  # サーバーの起動を待つ
 
     # Cloudflareトンネルの起動
     print("🌐 Cloudflare トンネルを開始しています...")
@@ -250,7 +250,7 @@ def setup_cloudflare_tunnel():
 
     return flask_process, tunnel_process, url
 
-def wait_for_flask_server(port=5000, timeout=15):
+def wait_for_flask_server(port=8000, timeout=20):
     """flaskサーバーが起動し、リクエストに応答するのを待機します。"""
     url = f"http://localhost:{port}"
     print(f"Waiting for Go server to start at {url}...")
